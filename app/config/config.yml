@@ -69,3 +69,8 @@ swiftmailer:
 sensio_framework_extra:
    router:
         annotations: false
+sb_redis:
+    clients:
+        default:
+            $options:    []
+            $parameters: ['tcp://%redis_host%:%redis_port%?database=%redis_database%']

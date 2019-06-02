@@ -33,3 +33,12 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    IpStoreBundle\:
+        resource: '../../src/IpStoreBundle/*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+        exclude: '../../src/IpStoreBundle/{Entity,Repository,Tests}'
+
+    IpStoreBundle\Storage\StorageInterface:
+        alias: IpStoreBundle\Storage\RedisStorage
