@@ -9,18 +9,18 @@ class ArrayStorage implements StorageInterface
 {
     private $storage = [];
 
-    public function query(Ip $ip): Ip
+    public function query(string $address): Ip
     {
-        if (!isset($this->storage[$ip->getAddress()])) {
+        if (!isset($this->storage[$address])) {
             throw new IpNotFoundException();
         }
-        $ip->setTimesSaved($this->storage[$ip->getAddress()]);
+        $timesSaved = $this->storage[$address];
 
-        return $ip;
+        return new Ip($address, $timesSaved);
     }
 
-    public function add(Ip $ip): void
+    public function add(string $address): void
     {
-        $this->storage[$ip->getAddress()] = ($this->storage[$ip->getAddress()] ?? 0) + 1;
+        $this->storage[$address] = ($this->storage[$address] ?? 0) + 1;
     }
 }

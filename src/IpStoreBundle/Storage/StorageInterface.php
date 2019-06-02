@@ -6,6 +6,6 @@ use IpStoreBundle\Entity\Ip;
 
 interface StorageInterface
 {
-    public function query(Ip $address): Ip;
-    public function add(Ip $address): void;
+    public function query(string $address): Ip;
+    public function add(string $address): void;
 }

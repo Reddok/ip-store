@@ -15,21 +15,20 @@ class RedisStorage implements StorageInterface
         $this->redis = $redis;
     }
 
-    public function query(Ip $ip): Ip
+    public function query(string $address): Ip
     {
-        $timesSaved = $this->redis->get($ip->getAddress());
+        $timesSaved = $this->redis->get($address);
 
         if (!$timesSaved) {
             throw new IpNotFoundException();
         }
-        $ip->setTimesSaved($timesSaved);
 
-        return $ip;
+        return new Ip($address, $timesSaved);
     }
 
-    public function add(Ip $ip): void
+    public function add(string $address): void
     {
-        $timesSaved = (int) $this->redis->get($ip->getAddress()) + 1;
-        $this->redis->set($ip->getAddress(), $timesSaved);
+        $timesSaved = (int) $this->redis->get($address) + 1;
+        $this->redis->set($address, $timesSaved);
     }
 }

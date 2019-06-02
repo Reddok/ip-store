@@ -12,7 +12,6 @@ class Ip
 {
     /**
      * @var string
-     * @Assert\Ip(version="all")
      */
     private $ip;
     /**
