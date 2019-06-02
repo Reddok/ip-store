@@ -1,9 +1,8 @@
 <?php
 
-namespace IpStoreBundle\Channel\CliChannel;
+namespace Reddok\IpStoreBundle\Channel;
 
-use IpStoreBundle\Channel\ChannelInterface;
-use IpStoreBundle\Entity\Ip;
+use Reddok\IpStoreBundle\Entity\Ip;
 
 class CliChannel implements ChannelInterface
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace IpStoreBundle\Storage;
+namespace Reddok\IpStoreBundle\Storage;
 
-use IpStoreBundle\Entity\Ip;
+use Reddok\IpStoreBundle\Entity\Ip;
 
 interface StorageInterface
 {

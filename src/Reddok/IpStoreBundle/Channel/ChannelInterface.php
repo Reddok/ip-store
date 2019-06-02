@@ -1,8 +1,8 @@
 <?php
 
-namespace IpStoreBundle\Channel;
+namespace Reddok\IpStoreBundle\Channel;
 
-use IpStoreBundle\Entity\Ip;
+use Reddok\IpStoreBundle\Entity\Ip;
 
 interface ChannelInterface
 {

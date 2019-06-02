@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Reddok\IpStoreBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Repository,Tests}'
+    Reddok\IpStoreBundle\Storage\StorageInterface:
+        alias: Reddok\IpStoreBundle\Storage\RedisStorage

@@ -1,6 +1,6 @@
 <?php
 
-namespace IpStoreBundle\Exception;
+namespace Reddok\IpStoreBundle\Exception;
 
 class IpNotFoundException extends \Exception
 {}

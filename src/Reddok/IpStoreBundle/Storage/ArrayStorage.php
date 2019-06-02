@@ -1,9 +1,9 @@
 <?php
 
-namespace IpStoreBundle\Storage;
+namespace Reddok\IpStoreBundle\Storage;
 
-use IpStoreBundle\Entity\Ip;
-use IpStoreBundle\Exception\IpNotFoundException;
+use Reddok\IpStoreBundle\Entity\Ip;
+use Reddok\IpStoreBundle\Exception\IpNotFoundException;
 
 class ArrayStorage implements StorageInterface
 {

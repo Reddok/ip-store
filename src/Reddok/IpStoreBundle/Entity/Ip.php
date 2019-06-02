@@ -1,12 +1,10 @@
 <?php
 
-namespace IpStoreBundle\Entity;
-
-use Symfony\Component\Validator\Constraints as Assert;
+namespace Reddok\IpStoreBundle\Entity;
 
 /**
  * Class Ip
- * @package IpStoreBundle\Entity
+ * @package Reddok\IpStoreBundle\Entity
  */
 class Ip
 {
