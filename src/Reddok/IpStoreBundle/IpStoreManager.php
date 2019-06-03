@@ -1,71 +1,74 @@
 <?php
+declare(strict_types=1);
 
 namespace Reddok\IpStoreBundle;
 
-use Reddok\IpStoreBundle\Channel\ChannelInterface;
-use Reddok\IpStoreBundle\Exception\IpNotFoundException;
+use Reddok\IpStoreBundle\Entity\Ip;
+use Reddok\IpStoreBundle\Exception\IpInvalidException;
 use Reddok\IpStoreBundle\Storage\StorageInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Class IpStoreManager
+ * @package Reddok\IpStoreBundle
+ */
 class IpStoreManager extends Bundle
 {
+    /**
+     * @var StorageInterface
+     */
     private $storage;
-    private $channel;
+    /**
+     * @var ValidatorInterface
+     */
     private $validator;
 
+    /**
+     * IpStoreManager constructor.
+     * @param StorageInterface $storage
+     * @param ValidatorInterface $validator
+     */
     public function __construct(StorageInterface $storage, ValidatorInterface $validator)
     {
         $this->storage = $storage;
         $this->validator = $validator;
     }
 
-    public function setChannel(ChannelInterface $channel): void
+    /**
+     * @param string $address
+     * @throws IpInvalidException
+     */
+    public function add(string $address): void
     {
-        $this->channel = $channel;
-    }
-
-    public function add(string $address): string
-    {
-        if ($error = $this->validate($address))
-        {
-            return $error;
-        }
-
+        $this->validate($address);
         $this->storage->add($address);
-
-        $response = $this->channel->saved($address);
-        return $response . $this->query($address);
     }
 
-    public function query(string $address): string
+    /**
+     * @param string $address
+     * @return Ip
+     * @throws IpInvalidException
+     */
+    public function query(string $address): Ip
     {
-        if ($error = $this->validate($address))
-        {
-            return $error;
-        }
-
-        try {
-            $ip = $this->storage->query($address);
-            $response = $this->channel->show($ip);
-        } catch (IpNotFoundException $exception) {
-            $response = $this->channel->notFound($address);
-        }
-
-        return $response;
+        $this->validate($address);
+        return $this->storage->query($address);
     }
 
-    protected function validate(string $address): ?string
+    /**
+     * @param string $address
+     * @throws IpInvalidException
+     */
+    protected function validate(string $address)
     {
-        $ipConstraint = new Assert\Ip();
+        $ipConstraint = new Assert\Ip(['version' => Assert\Ip::ALL]);
 
         $possibleErrors = $this->validator->validate($address, $ipConstraint);
 
         if(count($possibleErrors)) {
-            return $this->channel->invalid($address);
+            throw new IpInvalidException();
         }
-
-        return null;
     }
 }

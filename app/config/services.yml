@@ -33,3 +33,7 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    testvalidator:
+        alias: 'debug.validator'
+        public: '%services_defaults_public%'

@@ -1,27 +1,45 @@
 <?php
+declare(strict_types=1);
 
 namespace Reddok\IpStoreBundle\Command;
 
-use Reddok\IpStoreBundle\Channel\CliChannel\CliChannel;
+use Reddok\IpStoreBundle\Exception\IpInvalidException;
 use Reddok\IpStoreBundle\IpStoreManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+
+/**
+ * Class AddIpCommand
+ * @package Reddok\IpStoreBundle\Command
+ */
 class AddIpCommand extends Command
 {
+    /**
+     * @var IpStoreManager
+     */
     private $store;
+    /**
+     * @var string
+     */
     protected static $defaultName = 'ipstore:add';
 
-    public function __construct(IpStoreManager $store, CliChannel $channel)
+    /**
+     * AddIpCommand constructor.
+     * @param IpStoreManager $store
+     */
+    public function __construct(IpStoreManager $store)
     {
         $this->store = $store;
-        $this->store->setChannel($channel);
         parent::__construct();
     }
 
-    protected function configure()
+    /**
+     *
+     */
+    protected function configure(): void
     {
         $this->setDescription('Adds ip to store')
             ->setHelp('This command allow you to add ip to our store. You must provide ip as argument. You will receive how many times
@@ -29,9 +47,22 @@ class AddIpCommand extends Command
             ->addArgument('ip', InputArgument::REQUIRED, 'Ip for storing');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $address = $input->getArgument('ip');
-        $output->writeLn($this->store->add($address));
+
+        try {
+            $this->store->add($address);
+            $ip = $this->store->query($address);
+
+            $output->writeLn('Ip ' . $address . ' successfully saved.');
+            $output->writeLn('Ip ' . $ip->getAddress() . ' stored ' . $ip->getTimesSaved() . ' times.');
+        } catch (IpInvalidException $exception) {
+            $output->writeLn('Sorry, but ip ' . $address . ' is invalid. You can provide only iPv4 and iPv6 formats.');
+        }
     }
 }
