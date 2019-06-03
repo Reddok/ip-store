@@ -7,5 +7,5 @@ services:
     Reddok\IpStoreBundle\:
         resource: '../../*'
         exclude: '../../{Entity,Repository,Tests}'
-    Reddok\IpStoreBundle\Storage\StorageInterface: #defines current storage mechanism
+    Reddok\IpStoreBundle\Storage\StorageInterface: #defines default storage mechanism, can be overwritten on app level
         alias: Reddok\IpStoreBundle\Storage\RedisStorage
